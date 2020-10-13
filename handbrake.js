@@ -19,36 +19,39 @@ const processFile = ( uploadedDirectory, uploadedFileName, cb ) => {
 
 		new Promise(function(resolve, reject) {
 			//STEP 3: Rename the uploaded file and put old suffix
-			fs.rename(spawnData.input, spawnData.output, (err) => {
-				if (!err) {
-					resolve('Rename complete!')
-				}
-				else {
-					reject(err);
-				}
-			});
-		})
-		.then(function(rename) {
-			console.log("2. File renamed", spawnData);
-			return spawnData
+			//fs.rename(spawnData.input, spawnData.output, (err) => {
+			//	if (!err) {
+			//		resolve('Rename complete!')
+			//	}
+			//	else {
+			//		reject(err);
+			//	}
+			//});
+			hbjs.spawn(spawnData)
+                        .on("begin",function(){
+                                console.log('begin')
+                        })
+                        .on('error', err => {
+                                // invalid user input, no video found etc
+                                console.log(err, "err")
+                                reject(err)
+                        })
+                        .on('progress', progress => {
+                                console.log('Percent complete: %s, ETA: %s', progress.percentComplete, progress.eta)
+                        })
+                        .on("complete", function (complete) {
+                                console.log('complete');
+                                resolve({modified_file: renamedFile, 
+					original_file: uploadedFileName, 
+					modified_filepath:`${uploadedDirectory}/${renamedFile}`, 
+					original_filepath:`${uploadedDirectory}/${uploadedFileName}`
+				})
+                        })
 		})
 		.then(function(data) {
-			hbjs.spawn(spawnData)
-			.on("begin",function(){
-	            		console.log('begin')
-	        	})
-			.on('error', err => {
-				// invalid user input, no video found etc
-				console.log(err, "err")
-	                        cb(err, null)
-			})
-			.on('progress', progress => {
-				console.log('Percent complete: %s, ETA: %s', progress.percentComplete, progress.eta)
-			})
-			.on("complete", function (complete) {
-	            		console.log('complete');
-	                        cb(null, {modified_file: renamedFile, original_file: uploadedFileName, modified_filepath:`${uploadedDirectory}/${renamedFile}`})
-	        	})
+			console.log("2. Data is ready for callback Success!!", data)
+			fs.unlinkSync(data.original_filepath)
+			cb(null, data)
 		})
 		.catch(function(errorData) {
 			console.log("3. ", errorData);
