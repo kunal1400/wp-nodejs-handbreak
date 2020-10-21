@@ -34,10 +34,9 @@ console.log(uploadedFilePath, "uploadedFilePath")
 			// If uploaded file is video
 			if ( videoMimeTypes.indexOf(mimetype) !== -1 ) {
 				console.log(mimetype, "videoMimeTypes")
-				
 				hb.processVideoFile( uploadedDirectory.join("/"), uploadedFileName, mimetype, function(error, data) {
 					if (!error) {
-						res.send({status:true, data})
+						res.send({status:true, data, mimetype:'video/mp4'})
 					}
 					else {
 						res.send({status:false, error})
@@ -46,11 +45,10 @@ console.log(uploadedFilePath, "uploadedFilePath")
 			}
 			else if ( audioMimeTypes.indexOf(mimetype) !== -1 ) {
 				console.log(mimetype, "audioMimeTypes")
-				
 				// If uploaded file is video
 				hb.processAudioFile( uploadedDirectory.join("/"), uploadedFileName, mimetype, function(error, data) {
 					if (!error) {
-						res.send({status:true, data})
+						res.send({status:true, data, mimetype:'audio/mpeg'})
 					}
 					else {
 						res.send({status:false, error})
