@@ -12,7 +12,8 @@ const processVideoFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
 	if ( uploadedDirectory ) {
 		let spawnData = {
 			input: `${uploadedDirectory}/${uploadedFileName}`,
-			output: `${uploadedDirectory}/${renamedFile}`
+			output: `${uploadedDirectory}/${renamedFile}`,
+			quality: 23
 		}
 
 		console.log("1.", spawnData, "spawnData")

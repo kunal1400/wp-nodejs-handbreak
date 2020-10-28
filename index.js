@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 	// STEP 1: Get the uploaded file root path (this we get from request data)
 	let uploadedFilePath = req.query.fullsizepath
 	let mimetype = req.query.mimetype
-console.log(req.query, uploadedFilePath, mimetype, "oppo")
+	console.log(req.query, uploadedFilePath, mimetype, "oppo")
 	if ( !uploadedFilePath ) {
 		res.send({status: false, msg: "uploadedFilePath param is required"})
 	} 
@@ -20,9 +20,8 @@ console.log(req.query, uploadedFilePath, mimetype, "oppo")
 	else {
 		let uploadedFileName  = ""
 		let uploadedDirectory = []
-console.log(uploadedFilePath, "uploadedFilePath")
+		console.log(uploadedFilePath, "uploadedFilePath")
 		if (uploadedFilePath) {
-
 			let splitedArray = uploadedFilePath.split("/")
 			if (splitedArray.length > 0) {
 				uploadedFileName  = splitedArray[splitedArray.length - 1]
@@ -30,7 +29,6 @@ console.log(uploadedFilePath, "uploadedFilePath")
 					uploadedDirectory.push(splitedArray[i])
 				}
 			}
-
 			// If uploaded file is video
 			if ( videoMimeTypes.indexOf(mimetype) !== -1 ) {
 				console.log(mimetype, "videoMimeTypes")
