@@ -39,6 +39,10 @@ const processVideoFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
             })
             .on('progress', progress => {
                 console.log('Percent complete: %s, ETA: %s', progress.percentComplete, progress.eta)
+                // Writing the progress in file
+                writeInFile(uploadedFileName, progress.percentComplete, progress.eta, function(error, data) {
+                	console.log(error, data)
+                })
             })
             .on("complete", function (complete) {
                 console.log('complete');
@@ -95,6 +99,10 @@ const processAudioFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
             })
             .on('progress', progress => {
                 console.log('Percent complete: %s, ETA: %s', progress.percentComplete, progress.eta)
+                // Writing the progress in file
+                writeInFile(uploadedFileName, progress.percentComplete, progress.eta, function(error, data) {
+                	console.log(error, data)
+                }
             })
             .on("complete", function (complete) {
                 console.log('complete');
@@ -120,7 +128,23 @@ const processAudioFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
 	}
 }
 
+/**
+* Writing in file
+**/
+const writeInFile = (filename="", percentagecomplete="", eta="", cb) => {
+	var jsonToWrite = {filename, percentagecomplete, eta}
+
+	fs.writeFile('views/index.html', JSON.stringify(jsonToWrite), function (err) {
+		if (err) {
+			cb(err, null)
+		} else {
+			cb(null, "saved")
+		}
+	});
+}
+
 module.exports = {
 	processVideoFile,
-	processAudioFile
+	processAudioFile,
+	writeInFile
 }

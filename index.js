@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 const hb = require('./handbrake')
+const fs = require('fs');
 const videoMimeTypes = ['video','video/x-flv', 'video/mp4', 'application/x-mpegURL', 'video/MP2T', 'video/3gpp', 'video/quicktime', 'video/x-msvideo', 'video/x-ms-wmv', 'video/avi']
 const audioMimeTypes = ['audio', 'audio/basic','auido/L24','audio/mid','audio/mpeg','audio/mp4','audio/x-aiff','audio/x-mpegurl','audio/vnd.rn-realaudio','audio/vnd.rn-realaudio','audio/ogg','audio/vorbis','audio/vnd.wav']
 
@@ -58,6 +59,21 @@ app.get('/', (req, res) => {
 			}
 		}
 	}
+})
+
+// app.get('/sse', function(req, res) {
+// 	hb.writeInFile("kunlal", "mal", function(error, data) {
+// 		res.send("cone")
+// 	})
+// })
+
+/**
+* Sending the file response
+**/
+app.get('/getvideoprogress', function(req, res) {
+	fs.readFile('views/index.html', 'utf8', function(err, data){ 
+		res.send(data)
+	});
 })
 
 app.listen(port, () => {
