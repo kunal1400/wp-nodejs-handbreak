@@ -56,17 +56,17 @@ const processVideoFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
 		.then(function(data) {
 			console.log("2. Data is ready for callback Success!!", data)
 			fs.unlinkSync(data.original_filepath)
-			// Write in file after deleting
-			writeInFile(null, null, null, "video_deleted", function(error, data) {
-                console.log(error, data)
-        	})
+			// // Write in file after deleting
+			// writeInFile(null, null, null, "video_deleted", function(error, data) {
+   //              console.log(error, data)
+   //      	})
 			cb(null, data)
 		})
 		.catch(function(errorData) {
 			console.log("3. ", errorData);
-			writeInFile(null, null, null, "error_during_video_conversion", function(error, data) {
-            	console.log(error, data)
-            })
+			// writeInFile(null, null, null, "error_during_video_conversion", function(error, data) {
+   //          	console.log(error, data)
+   //          })
 			cb(errorData, null)
 		})
 	}
@@ -123,16 +123,16 @@ const processAudioFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
 		.then(function(data) {
 			console.log("2. Data is ready for callback Success!!", data)
 			fs.unlinkSync(data.original_filepath)
-			writeInFile(null, null, null, "audio_deleting", function(error, data) {
-            	console.log(error, data)
-            })
+			// writeInFile(null, null, null, "audio_deleting", function(error, data) {
+   //          	console.log(error, data)
+   //          })
 			cb(null, data)
 		})
 		.catch(function(errorData) {
 			console.log("3. ", errorData);
-			writeInFile(null, null, null, "error_during_audio_processing", function(error, data) {
-            	console.log(error, data)
-            })
+			// writeInFile(null, null, null, "error_during_audio_processing", function(error, data) {
+   //          	console.log(error, data)
+   //          })
 			cb(errorData, null)
 		})
 	}
