@@ -6,6 +6,12 @@ const fs = require('fs');
 const videoMimeTypes = ['video','video/x-flv', 'video/mp4', 'application/x-mpegURL', 'video/MP2T', 'video/3gpp', 'video/quicktime', 'video/x-msvideo', 'video/x-ms-wmv', 'video/avi']
 const audioMimeTypes = ['audio', 'audio/basic','auido/L24','audio/mid','audio/mpeg','audio/mp4','audio/x-aiff','audio/x-mpegurl','audio/vnd.rn-realaudio','audio/vnd.rn-realaudio','audio/ogg','audio/vorbis','audio/vnd.wav']
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.get('/', (req, res) => {
 
 	// STEP 1: Get the uploaded file root path (this we get from request data)

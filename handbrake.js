@@ -102,7 +102,7 @@ const processAudioFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
                 // Writing the progress in file
                 writeInFile(uploadedFileName, progress.percentComplete, progress.eta, function(error, data) {
                 	console.log(error, data)
-                }
+                })
             })
             .on("complete", function (complete) {
                 console.log('complete');
