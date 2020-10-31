@@ -56,10 +56,16 @@ const processVideoFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
 		.then(function(data) {
 			console.log("2. Data is ready for callback Success!!", data)
 			fs.unlinkSync(data.original_filepath)
+			writeInFile("", "", "", function(error, data) {
+	                      	console.log(error, data)
+                	})
 			cb(null, data)
 		})
 		.catch(function(errorData) {
 			console.log("3. ", errorData);
+			writeInFile("", "", "", function(error, data) {
+                           console.log(error, data)
+                        })
 			cb(errorData, null)
 		})
 	}
