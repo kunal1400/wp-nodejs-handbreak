@@ -40,7 +40,7 @@ const processVideoFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
             .on('progress', progress => {
                 console.log('Percent complete: %s, ETA: %s', progress.percentComplete, progress.eta)
                 // Writing the progress in file
-                writeInFile(uploadedFileName, progress.percentComplete, progress.eta, function(error, data) {
+                writeInFile(uploadedFileName, progress.percentComplete, progress.eta, "video processing", function(error, data) {
                 	console.log(error, data)
                 })
             })
@@ -56,16 +56,17 @@ const processVideoFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
 		.then(function(data) {
 			console.log("2. Data is ready for callback Success!!", data)
 			fs.unlinkSync(data.original_filepath)
-			writeInFile("", "", "", function(error, data) {
-	                      	console.log(error, data)
-                	})
+			// Write in file after deleting
+			writeInFile("", "", "", "video deleted", function(error, data) {
+                console.log(error, data)
+        	})
 			cb(null, data)
 		})
 		.catch(function(errorData) {
 			console.log("3. ", errorData);
-			writeInFile("", "", "", function(error, data) {
-                           console.log(error, data)
-                        })
+			writeInFile("", "", "", "error during video conversion", function(error, data) {
+            	console.log(error, data)
+            })
 			cb(errorData, null)
 		})
 	}
@@ -106,7 +107,7 @@ const processAudioFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
             .on('progress', progress => {
                 console.log('Percent complete: %s, ETA: %s', progress.percentComplete, progress.eta)
                 // Writing the progress in file
-                writeInFile(uploadedFileName, progress.percentComplete, progress.eta, function(error, data) {
+                writeInFile(uploadedFileName, progress.percentComplete, progress.eta, "audio processing", function(error, data) {
                 	console.log(error, data)
                 })
             })
@@ -122,10 +123,16 @@ const processAudioFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
 		.then(function(data) {
 			console.log("2. Data is ready for callback Success!!", data)
 			fs.unlinkSync(data.original_filepath)
+			writeInFile("", "", "", "audio deleting", function(error, data) {
+            	console.log(error, data)
+            })
 			cb(null, data)
 		})
 		.catch(function(errorData) {
 			console.log("3. ", errorData);
+			writeInFile("", "", "", "error during audio processing", function(error, data) {
+            	console.log(error, data)
+            })
 			cb(errorData, null)
 		})
 	}
@@ -137,8 +144,8 @@ const processAudioFile = ( uploadedDirectory, uploadedFileName, mimeType, cb ) =
 /**
 * Writing in file
 **/
-const writeInFile = (filename="", percentagecomplete="", eta="", cb) => {
-	var jsonToWrite = {filename, percentagecomplete, eta}
+const writeInFile = (filename="", percentagecomplete="", eta="", source=null, cb) => {
+	var jsonToWrite = {filename, percentagecomplete, eta, source}
 
 	fs.writeFile('views/index.html', JSON.stringify(jsonToWrite), function (err) {
 		if (err) {
